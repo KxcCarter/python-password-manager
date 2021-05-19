@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
+import json
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -42,23 +43,48 @@ def save_password_info():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
-    concated_data = f"Website: {website} | Email: {email} | Password: {password}"
 
-    if len(password) == 0 or len(website) == 0:
+    new_data = {website: {
+        "email": email,
+        "password": password,
+    }}
+
+    if len(password) == 0:
         messagebox.showerror(title="You done messed up, A-Aron!", message="You can't store an empty field.")
         return
+    else:
+        try:
+            with open("my_passwords.json", "r") as data_file:
+                data = json.load(data_file)
+        except FileNotFoundError:
+            with open("my_passwords.json", "w") as data_file:
+                json.dump(new_data, data_file, indent=2)
+        else:
+            data.update(new_data)
 
-    is_ok_to_save = messagebox.askokcancel(title=website, message=f"These are the details entered: \n {concated_data} \n Is it okay to save?")
+            with open("my_passwords.json", "w") as data_file:
+                # Saving updated data
+                json.dump(data, data_file, indent=2)
 
-    if is_ok_to_save:
-        with open("my_passwords.txt", "a") as data_file:
-            data_file.write(f"{concated_data} \n")
-            clear_fields()
+        clear_fields()
 
 
 def clear_fields():
     website_entry.delete(0, END)
     password_entry.delete(0, END)
+
+
+# ---------------------------- PASSWORD SEARCH ------------------------------- #
+def password_search():
+    with open("my_passwords.json", "r") as data_file:
+        data = json.load(data_file)
+        print(data)
+
+
+
+
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title("Password Manager")
@@ -81,8 +107,8 @@ password_label = Label(text="Password:")
 password_label.grid(row=3, column=0)
 
 # Entries
-website_entry = Entry(width=35)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=21)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
 email_entry = Entry(width=35)
 email_entry.grid(row=2, column=1, columnspan=2)
@@ -93,6 +119,8 @@ password_entry.grid(row=3, column=1)
 # Buttons
 generate_password_button = Button(text="Generate Password", command=generate_password)
 generate_password_button.grid(row=3, column=2)
+search_for_password_button = Button(text="Search For Password", command=password_search)
+search_for_password_button.grid(row=1, column=2)
 add_button = Button(text="Add", width=36, command=save_password_info )
 add_button.grid(row=4, column=1, columnspan=2)
 
