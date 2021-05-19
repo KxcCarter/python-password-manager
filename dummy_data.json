@@ -1,0 +1,22 @@
+{
+  "amazon.com": {
+    "email": "email.me@email.com",
+    "password": "yf%2Kk%K8X7ti0iG"
+  },
+  "facebook.com": {
+    "email": "email.me@email.com",
+    "password": "$!31xS+SO3jDh+v7"
+  },
+  "google.com": {
+    "email": "email.me@email.com",
+    "password": "VIOnUk0#%IH1NC5"
+  },
+  "korg.com": {
+    "email": "email.me@email.com",
+    "password": "password"
+  },
+  "apple.com": {
+    "email": "email.me@email.com",
+    "password": "hGE+&5Wbu4Tv"
+  }
+}
