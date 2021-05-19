@@ -79,11 +79,13 @@ def clear_fields():
 
 # ---------------------------- PASSWORD SEARCH ------------------------------- #
 def password_search():
-    with open("dummy_data.json", "r") as data_file:
-        data = json.load(data_file)
-
+    try:
+        with open("dummy_data.json", "r") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showerror(title="File not found!", message="There is no password data file. \nTry saving a password and then searching.")
+    else:
         try:
-
             search_results = data[website_entry.get()]
             results_email = search_results["email"]
             results_password = search_results["password"]
