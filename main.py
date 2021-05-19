@@ -6,6 +6,7 @@ import json
 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+
 def generate_password():
     """
     Generates a random password.
@@ -78,27 +79,27 @@ def clear_fields():
 
 
 # ---------------------------- PASSWORD SEARCH ------------------------------- #
+
 def password_search():
+    website = website_entry.get()
     try:
         with open("dummy_data.json", "r") as data_file:
             data = json.load(data_file)
     except FileNotFoundError:
         messagebox.showerror(title="File not found!", message="There is no password data file. \nTry saving a password and then searching.")
     else:
-        try:
-            search_results = data[website_entry.get()]
+        if website in data:
+            search_results = data[website]
             results_email = search_results["email"]
             results_password = search_results["password"]
-            messagebox.showinfo(title=f"{website_entry.get()} password", message=f"Email: {results_email} \nPassword: {results_password}")
-        except:
+            messagebox.showinfo(title=f"{website} password", message=f"Email: {results_email} \nPassword: {results_password}")
+        else:
             messagebox.showerror(title="Uh oh!", message="Looks like that website is not in the records.")
 
 
 
-
-
-
 # ---------------------------- UI SETUP ------------------------------- #
+
 window = Tk()
 window.title("Password Manager")
 window.config(padx=50, pady=50)
